@@ -2,6 +2,31 @@
 $testRootDirectory = Split-Path -Parent $directory
 Import-Module (Join-Path $testRootDirectory 'PSScriptAnalyzerTestHelper.psm1')
 
+# we need a way to determine whether the file system is case sensitive
+# using $IsLinux or $IsMacOS is not sufficient
+try
+{
+    $module = get-module pester
+    # we can use the Pester New-TestDrive function
+    $d = & $module New-TestDrive -Pass
+    foreach ( $f in "file1","FILE2","fIlE3" ) {
+        $null = new-item -type file (Join-Path $d.root $f)
+    }
+    Write-Verbose -Verbose ("temp drive: " + $d.root)
+    $count = @(get-childitem (Join-Path $d.root "file?")).Count
+    if ( $count -eq 1 ) {
+        Write-Verbose -Verbose "Case Sensitive FS"
+        $script:CaseSensitiveFS = $true
+    } else {
+        Write-Verbose -Verbose "Case Insensitive FS"
+        $script:CaseSensitiveFS = $false
+    }
+}
+finally {
+    Remove-PSDrive $d
+    Remove-Item -force -recurse $d.root
+}
+
 if (-not (Test-PSEditionCoreCLR))
 {
 	# Force Get-Help not to prompt for interactive input to download help using Update-Help
@@ -97,7 +122,7 @@ Describe "Test importing correct customized rules" {
 		It "will show the custom rules when given a glob" {
 			# needs fixing for Linux
 			$expectedNumRules = 4
-			if ($IsLinux)
+			if ($script:CaseSensitiveFS)
 			{
 				$expectedNumRules = 3
 			}
@@ -111,9 +136,8 @@ Describe "Test importing correct customized rules" {
 		}
 
 		It "will show the custom rules when given glob with recurse switch" {
-			# needs fixing for Linux
 			$expectedNumRules = 5
-			if ($IsLinux)
+			if ($script:CaseSensitiveFS)
 			{
 				$expectedNumRules = 4
 			}
