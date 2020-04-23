@@ -27,22 +27,40 @@ stages:
           matrix:
             Ubuntu_16_04:
               vmImage: ubuntu-16.04
+            Ubuntu_16_04_PSPreview:
+              vmImage: ubuntu-16.04
+              PowerShellVersion: Preview
             Ubuntu_18_04:
               vmImage: ubuntu-18.04
+            Ubuntu_18_04_PSPreview:
+              vmImage: ubuntu-18.04
+              PowerShellVersion: Preview
             macOS_10_14_Mojave:
               vmImage: macOS-10.14
+            macOS_10_14_PSPreview:
+              vmImage: macOS-10.14
+              PowerShellVersion: Preview
             macOS_10_15_Catalina:
               vmImage: macOS-10.15
-            Windows_Server2016_PowerShell_Core:
+            macOS_10_15_PSPreview:
+              vmImage: macOS-10.15
+              PowerShellVersion: Preview
+            Win2016:
               vmImage: vs2017-win2016
-            Windows_Server2019_PowerShell_Core:
-              vmImage: windows-2019
-            Windows_Server2016_PowerShell_5_1:
+            Win2016_PSPreview:
               vmImage: vs2017-win2016
-              pwsh: false
-            Windows_Server2019_PowerShell_5_1:
+              PowerShellVersion: Preview
+            Win2016_PowerShell_5_1:
+              vmImage: vs2017-win2016
+              PowerShellVersion: WindowsPowerShell
+            Win2019:
               vmImage: windows-2019
-              pwsh: false
+            Win2019_PSPreview:
+              vmImage: windows-2019
+              PowerShellVersion: Preview
+            Win2019_PS5:
+              vmImage: windows-2019
+              PowerShellVersion: WindowsPowerShell
         pool:
           vmImage: $[ variables['vmImage'] ]
         steps:
