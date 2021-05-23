@@ -4,13 +4,12 @@
 $ErrorActionPreference = 'Stop'
 
 function Install-Pester {
-    $requiredPesterVersion = '5.0.2'
-    $pester = Get-Module Pester -ListAvailable | Where-Object { $_.Version -eq $requiredPesterVersion }
+    $pester = Get-Module Pester -ListAvailable | Where-Object { $_.Version -gt [version]'5.1' }
     if ($null -eq $pester) {
         if ($null -eq (Get-Module -ListAvailable PowershellGet)) {
             # WMF 4 image build
             Write-Verbose -Verbose "Installing Pester via nuget"
-            nuget install Pester -Version $requiredPesterVersion -source https://www.powershellgallery.com/api/v2 -outputDirectory "$env:ProgramFiles\WindowsPowerShell\Modules\." -ExcludeVersion
+            nuget install Pester -source https://www.powershellgallery.com/api/v2 -outputDirectory "$env:ProgramFiles\WindowsPowerShell\Modules\." -ExcludeVersion
         }
         else {
             # Visual Studio 2017 build (has already Pester v3, therefore a different installation mechanism is needed to make it also use the new version 4)
