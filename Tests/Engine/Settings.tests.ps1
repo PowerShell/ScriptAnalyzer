@@ -377,4 +377,34 @@ Describe "Settings Class" {
             @{ Expr = ';)' }
         )
     }
+
+    Context "FindSettingsMode" {
+        BeforeAll {
+            $findSettingsMode = ($settingsTypeName -as [type]).GetMethod(
+                'FindSettingsMode',
+                [System.Reflection.BindingFlags]::NonPublic -bor [System.Reflection.BindingFlags]::Static)
+
+            $outputObject = [System.Object]::new()
+        }
+
+        It "Should detect hashtable" {
+            $settings = @{}
+            $findSettingsMode.Invoke($null, @($settings, $null, [ref]$outputObject)) | Should -Be "Hashtable"
+        }
+
+        It "Should detect hashtable wrapped by a PSObject" {
+            $settings = [PSObject]@{} # Force the settings hashtable to be wrapped
+            $findSettingsMode.Invoke($null, @($settings, $null, [ref]$outputObject)) | Should -Be "Hashtable"
+        }
+
+        It "Should detect string" {
+            $settings = ""
+            $findSettingsMode.Invoke($null, @($settings, $null, [ref]$outputObject)) | Should -Be "File"
+        }
+
+        It "Should detect string wrapped by a PSObject" {
+            $settings = [PSObject]"" # Force the settings string to be wrapped
+            $findSettingsMode.Invoke($null, @($settings, $null, [ref]$outputObject)) | Should -Be "File"
+        }
+    }
 }

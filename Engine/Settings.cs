@@ -497,6 +497,13 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
         internal static SettingsMode FindSettingsMode(object settings, string path, out object settingsFound)
         {
             var settingsMode = SettingsMode.None;
+
+            // if the provided settings argument is wrapped in an expressions then PowerShell resolves it but it will be of type PSObject and we have to operate then on the BaseObject
+            if (settings is PSObject)
+            {
+                settings = ((PSObject)settings).BaseObject;
+            }
+
             settingsFound = settings;
             if (settingsFound == null)
             {
@@ -531,11 +538,6 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
                     if (settingsFound is Hashtable)
                     {
                         settingsMode = SettingsMode.Hashtable;
-                    }
-                    // if the provided argument is wrapped in an expressions then PowerShell resolves it but it will be of type PSObject and we have to operate then on the BaseObject
-                    else if (settingsFound is PSObject settingsFoundPSObject)
-                    {
-                        TryResolveSettingForStringType(settingsFoundPSObject.BaseObject, ref settingsMode, ref settingsFound);
                     }
                 }
             }
