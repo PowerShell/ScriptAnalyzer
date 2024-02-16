@@ -11,26 +11,35 @@ title: UseCorrectCasing
 
 ## Description
 
-This is a style/formatting rule. PowerShell is case insensitive where applicable. The casing of
-cmdlet names or parameters does not matter but this rule ensures that the casing matches for
-consistency and also because most cmdlets/parameters start with an upper case and using that
-improves readability to the human eye.
+This is a style/formatting rule. PowerShell is case insensitive wherever possible,
+so the casing of cmdlet names, parameters, keywords and operators does not matter.
+This rule nonetheless ensures consistent casing for clarity and readability.
+Using lowercase keywords helps distinguish them from commands.
+Using lowercase operators helps distinguish them from parameters.
 
 ## How
 
+Use exact casing for type names.
+
 Use exact casing of the cmdlet and its parameters, e.g.
 `Invoke-Command { 'foo' } -RunAsAdministrator`.
+
+Use lowercase for language keywords and operators.
 
 ## Example
 
 ### Wrong
 
 ```powershell
-invoke-command { 'foo' } -runasadministrator
+ForEach ($file IN get-childitem -recurse) {
+    $file.Extension -Eq '.txt'
+}
 ```
 
 ### Correct
 
 ```powershell
-Invoke-Command { 'foo' } -RunAsAdministrator
+foreach ($file in Get-ChildItem -Recurse) {
+    $file.Extension -eq '.txt'
+}
 ```
