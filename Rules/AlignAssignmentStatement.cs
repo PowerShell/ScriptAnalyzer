@@ -314,6 +314,11 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
 
         private bool HasPropertiesOnSeparateLines(IEnumerable<Tuple<IScriptExtent, IScriptExtent>> tuples)
         {
+            if (tuples.Count() == 1)
+            {
+                // If the hashtable has just a single key-value pair, it does not have properties on separate lines
+                return false;
+            }
             var lines = new HashSet<int>();
             foreach (var kvp in tuples)
             {
