@@ -11,7 +11,7 @@ Describe "UseConsistentIndentation" {
         function Invoke-FormatterAssertion {
             param(
                 [string] $ScriptDefinition,
-                [string] $ExcpectedScriptDefinition,
+                [string] $ExpectedScriptDefinition,
                 [int] $NumberOfExpectedWarnings,
                 [hashtable] $Settings
             )
@@ -19,9 +19,9 @@ Describe "UseConsistentIndentation" {
             # Unit test just using this rule only
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $scriptDefinition -Settings $settings
             $violations.Count | Should -Be $NumberOfExpectedWarnings -Because $ScriptDefinition
-            Invoke-Formatter -ScriptDefinition $scriptDefinition -Settings $settings | Should -Be $expected -Because $ScriptDefinition
+            Invoke-Formatter -ScriptDefinition $scriptDefinition -Settings $settings | Should -Be $ExpectedScriptDefinition -Because $ScriptDefinition
             # Integration test with all default formatting rules
-            Invoke-Formatter -ScriptDefinition $scriptDefinition | Should -Be $expected -Because $ScriptDefinition
+            Invoke-Formatter -ScriptDefinition $scriptDefinition | Should -Be $ExpectedScriptDefinition -Because $ScriptDefinition
         }
     }
     BeforeEach {
