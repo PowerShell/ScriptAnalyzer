@@ -177,6 +177,18 @@ function test {
 '@
         Invoke-Formatter -ScriptDefinition $IdempotentScriptDefinition | Should -Be $idempotentScriptDefinition
     }
+
+    It 'Should find violation in script when LParen is first token on a line and is not followed by Newline' {
+        $ScriptDefinition = @'
+     (foo)
+     (bar)
+'@
+        $ExpectedScriptDefinition = @'
+(foo)
+(bar)
+'@
+    Invoke-FormatterAssertion $ScriptDefinition $ExpectedScriptDefinition 2 $settings
+    }
 }
 
     Context "When a sub-expression is provided" {
