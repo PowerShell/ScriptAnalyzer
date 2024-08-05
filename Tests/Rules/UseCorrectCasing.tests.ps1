@@ -20,8 +20,8 @@ Describe "UseCorrectCasing" {
     }
 
     It "Does not corrects applications on the PATH" -Skip:($IsLinux -or $IsMacOS) {
-        Invoke-Formatter 'Cmd' | Should -BeExactly 'Cmd'
-        Invoke-Formatter 'MORE' | Should -BeExactly 'MORE'
+        Invoke-Formatter 'Git' | Should -BeExactly 'Git'
+        Invoke-Formatter 'SSH' | Should -BeExactly 'SSH'
     }
 
     It "Preserves extension of applications on Windows" -Skip:($IsLinux -or $IsMacOS) {
