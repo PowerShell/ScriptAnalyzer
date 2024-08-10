@@ -74,7 +74,7 @@ Describe "AvoidAssignmentToAutomaticVariables" {
         It "Using Variable <VariableName> as foreach name produces warning of Severity <ExpectedSeverity>" -TestCases $testCases_AutomaticVariables {
             param ($VariableName, $ExpectedSeverity)
 
-            [System.Array] $warnings = Invoke-ScriptAnalyzer -ScriptDefinition "foreach (`$$VariableName in `$foo) {}" -ExcludeRule PSReviewUnusedParameter
+            [System.Array] $warnings = Invoke-ScriptAnalyzer -ScriptDefinition "foreach (`$$VariableName in `$foo) {}"
             $warnings.Count | Should -Be 1
             $warnings.Severity | Should -Be $ExpectedSeverity
             $warnings.RuleName | Should -Be $ruleName
