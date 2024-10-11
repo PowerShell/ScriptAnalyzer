@@ -74,7 +74,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
         }
 
         /// <summary>
-        /// Returns the rule id for this record
+        /// Returns the rule suppression id for this record
         /// </summary>
         public string RuleSuppressionID
         {
@@ -88,7 +88,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
         /// </summary>
         public IEnumerable<CorrectionExtent> SuggestedCorrections
         {
-            get { return suggestedCorrections;  }            
+            get { return suggestedCorrections;  }
             set { suggestedCorrections = value; }
         }
 
@@ -100,7 +100,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
         public DiagnosticRecord()
         {
         }
-        
+
         /// <summary>
         /// DiagnosticRecord: The constructor for DiagnosticRecord class that takes in suggestedCorrection
         /// </summary>
@@ -108,6 +108,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
         /// <param name="extent">The place in the script this diagnostic refers to</param>
         /// <param name="ruleName">The name of the rule that created this diagnostic</param>
         /// <param name="severity">The severity of this diagnostic</param>
+        /// <param name="ruleId">The rule suppression ID of this diagnostic</param>
         /// <param name="scriptPath">The full path of the script file being analyzed</param>
         /// <param name="suggestedCorrections">The correction suggested by the rule to replace the extent text</param>
         public DiagnosticRecord(
