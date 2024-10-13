@@ -79,6 +79,31 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                 }
             }
 
+            IEnumerable<Ast> forEachStatementAsts = ast.FindAll(testAst => testAst is ForEachStatementAst, searchNestedScriptBlocks: true);
+            foreach (ForEachStatementAst forEachStatementAst in forEachStatementAsts)
+            {
+                var variableExpressionAst = forEachStatementAst.Variable;
+                var variableName = variableExpressionAst.VariablePath.UserPath;
+                if (_readOnlyAutomaticVariables.Contains(variableName, StringComparer.OrdinalIgnoreCase))
+                {
+                    yield return new DiagnosticRecord(DiagnosticRecordHelper.FormatError(Strings.AvoidAssignmentToReadOnlyAutomaticVariableError, variableName),
+                                                      variableExpressionAst.Extent, GetName(), DiagnosticSeverity.Error, fileName, variableName);
+                }
+
+                if (_readOnlyAutomaticVariablesIntroducedInVersion6_0.Contains(variableName, StringComparer.OrdinalIgnoreCase))
+                {
+                    var severity = IsPowerShellVersion6OrGreater() ? DiagnosticSeverity.Error : DiagnosticSeverity.Warning;
+                    yield return new DiagnosticRecord(DiagnosticRecordHelper.FormatError(Strings.AvoidAssignmentToReadOnlyAutomaticVariableIntroducedInPowerShell6_0Error, variableName),
+                                                      variableExpressionAst.Extent, GetName(), severity, fileName, variableName);
+                }
+
+                if (_writableAutomaticVariables.Contains(variableName, StringComparer.OrdinalIgnoreCase))
+                {
+                    yield return new DiagnosticRecord(DiagnosticRecordHelper.FormatError(Strings.AvoidAssignmentToWritableAutomaticVariableError, variableName),
+                                                      variableExpressionAst.Extent, GetName(), DiagnosticSeverity.Warning, fileName, variableName);
+                }
+            }
+
             IEnumerable<Ast> parameterAsts = ast.FindAll(testAst => testAst is ParameterAst, searchNestedScriptBlocks: true);
             foreach (ParameterAst parameterAst in parameterAsts)
             {
