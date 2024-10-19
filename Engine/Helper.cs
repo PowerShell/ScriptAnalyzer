@@ -870,19 +870,13 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
         }
 
         /// <summary>
-        /// Returns true if varaible is either a global variable or an environment variable
+        /// Returns true if variable is either a global variable or an environment variable
         /// </summary>
         /// <param name="varAst"></param>
-        /// <param name="ast"></param>
         /// <returns></returns>
-        public bool IsVariableGlobalOrEnvironment(VariableExpressionAst varAst, Ast ast)
+        public bool IsVariableGlobalOrEnvironment(VariableExpressionAst varAst)
         {
-            if (!VariableAnalysisDictionary.ContainsKey(ast) || VariableAnalysisDictionary[ast] == null)
-            {
-                return false;
-            }
-
-            return VariableAnalysisDictionary[ast].IsGlobalOrEnvironment(varAst);
+            return VariableAnalysis.IsGlobalOrEnvironment(varAst);
         }
 
 

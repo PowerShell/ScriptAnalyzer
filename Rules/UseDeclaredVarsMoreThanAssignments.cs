@@ -143,7 +143,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                 if (assignmentVarAst != null)
                 {
                     // Ignore if variable is global or environment variable or scope is drive qualified variable
-                    if (!Helper.Instance.IsVariableGlobalOrEnvironment(assignmentVarAst, scriptBlockAst)
+                    if (!Helper.Instance.IsVariableGlobalOrEnvironment(assignmentVarAst)
                         && !assignmentVarAst.VariablePath.IsScript
                         && assignmentVarAst.VariablePath.DriveName == null)
                     {

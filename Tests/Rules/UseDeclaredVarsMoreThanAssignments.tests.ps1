@@ -58,6 +58,48 @@ function MyFunc2() {
             Should -Be 0
         }
 
+        It "does not flag global variable" {
+            Invoke-ScriptAnalyzer -ScriptDefinition '$global:x=$null' -IncludeRule $violationName  | `
+            Get-Count | `
+            Should -Be 0
+        }
+
+        It "does not flag global variable in block" {
+            Invoke-ScriptAnalyzer -ScriptDefinition '$global:x=$null;{$global:x=$null}' -IncludeRule $violationName  | `
+            Get-Count | `
+            Should -Be 0
+        }
+
+        It "does not flag env variable" {
+            Invoke-ScriptAnalyzer -ScriptDefinition '$env:x=$null' -IncludeRule $violationName  | `
+            Get-Count | `
+            Should -Be 0
+        }
+
+        It "does not flag env variable in block" {
+            Invoke-ScriptAnalyzer -ScriptDefinition '$env:x=$null;{$env:x=$null}' -IncludeRule $violationName  | `
+            Get-Count | `
+            Should -Be 0
+        }
+
+        It "does not flag script variable" {
+            Invoke-ScriptAnalyzer -ScriptDefinition '$script:x=$null' -IncludeRule $violationName  | `
+            Get-Count | `
+            Should -Be 0
+        }
+
+        It "does not flag script variable in block" {
+            Invoke-ScriptAnalyzer -ScriptDefinition '$script:x=$null;{$script:x=$null}' -IncludeRule $violationName  | `
+            Get-Count | `
+            Should -Be 0
+        }
+
+        It "flags private variable" {
+            Invoke-ScriptAnalyzer -ScriptDefinition '$private:x=$null' -IncludeRule $violationName  | `
+            Get-Count | `
+            Should -Be 1
+        }
+
         It "flags a variable that is defined twice but never used" {
             Invoke-ScriptAnalyzer -ScriptDefinition '$myvar=1;$myvar=2' -IncludeRule $violationName | `
             Get-Count | `

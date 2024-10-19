@@ -375,7 +375,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
         /// </summary>
         /// <param name="varTarget"></param>
         /// <returns></returns>
-        public bool IsGlobalOrEnvironment(VariableExpressionAst varTarget)
+        public static bool IsGlobalOrEnvironment(VariableExpressionAst varTarget)
         {
             if (varTarget != null)
             {
