@@ -42,12 +42,10 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands
         /// </summary>
         [Parameter(Position = 0,
             ParameterSetName = ParameterSet_Path_IncludeSuppressed,
-            Mandatory = true,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
         [Parameter(Position = 0,
             ParameterSetName = ParameterSet_Path_SuppressedOnly,
-            Mandatory = true,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
         [ValidateNotNull]
@@ -57,7 +55,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Commands
             get { return path; }
             set { path = value; }
         }
-        private string path;
+        private string path = ".";
 
         /// <summary>
         /// ScriptDefinition: a script definition in the form of a string to run rules on.
