@@ -75,6 +75,33 @@ $x = @{ }
             Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings | Get-Count | Should -Be 0
 
         }
+
+        It "Should ignore if a hashtable has a single key-value pair on a single line" {
+            $def = @'
+$x = @{ 'key'="value" }
+'@
+            Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings | Get-Count | Should -Be 0
+
+        }
+
+        It "Should ignore if a hashtable has a single key-value pair across multiple lines" {
+            $def = @'
+$x = @{ 
+    'key'="value" 
+}
+'@
+            Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings | Get-Count | Should -Be 0
+
+        }
+
+        It "Should ignore if a hashtable has multiple key-value pairs on a single line" {
+            $def = @'
+$x = @{ 'key'="value"; 'key2'="value2"; 'key3WithLongerName'="value3" }
+'@
+            Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings | Get-Count | Should -Be 0
+
+        }
+
     }
 
     Context "When assignment statements are in DSC Configuration" {
