@@ -202,13 +202,13 @@
     <value>One Char</value>
   </data>
   <data name="UsePSCredentialTypeDescription" xml:space="preserve">
-    <value>For PowerShell 4.0 and earlier, a parameter named Credential with type PSCredential must have a credential transformation attribute defined after the PSCredential type attribute. </value>
+    <value>For PowerShell 4.0 and earlier, a parameter named Credential with type PSCredential must have a credential transformation attribute defined after the PSCredential type attribute.</value>
   </data>
   <data name="UsePSCredentialTypeError" xml:space="preserve">
     <value>The Credential parameter in '{0}' must be of type PSCredential. For PowerShell 4.0 and earlier, please define a credential transformation attribute, e.g. [System.Management.Automation.Credential()], after the PSCredential type attribute.</value>
   </data>
   <data name="UsePSCredentialTypeErrorSB" xml:space="preserve">
-    <value>The Credential parameter found in the script block must be of type PSCredential. For PowerShell 4.0 and earlier please define a credential transformation attribute, e.g. [System.Management.Automation.Credential()], after the PSCredential type attribute. </value>
+    <value>The Credential parameter found in the script block must be of type PSCredential. For PowerShell 4.0 and earlier please define a credential transformation attribute, e.g. [System.Management.Automation.Credential()], after the PSCredential type attribute.</value>
   </data>
   <data name="UsePSCredentialTypeCommonName" xml:space="preserve">
     <value>Use PSCredential type.</value>
@@ -535,7 +535,7 @@
     <value>PSDSC</value>
   </data>
   <data name="UseStandardDSCFunctionsInResourceCommonName" xml:space="preserve">
-    <value>Use Standard Get/Set/Test TargetResource functions in DSC Resource </value>
+    <value>Use Standard Get/Set/Test TargetResource functions in DSC Resource</value>
   </data>
   <data name="UseStandardDSCFunctionsInResourceDescription" xml:space="preserve">
     <value>DSC Resource must implement Get, Set and Test-TargetResource functions. DSC Class must implement Get, Set and Test functions.</value>
@@ -769,7 +769,7 @@
     <value>In a module manifest, AliasesToExport, CmdletsToExport, FunctionsToExport and VariablesToExport fields should not use wildcards or $null in their entries. During module auto-discovery, if any of these entries are missing or $null or wildcard, PowerShell does some potentially expensive work to analyze the rest of the module.</value>
   </data>
   <data name="UseToExportFieldsInManifestError" xml:space="preserve">
-    <value>Do not use wildcard or $null in this field. Explicitly specify a list for {0}.  </value>
+    <value>Do not use wildcard or $null in this field. Explicitly specify a list for {0}.</value>
   </data>
   <data name="UseToExportFieldsInManifestName" xml:space="preserve">
     <value>UseToExportFieldsInManifest</value>
@@ -1129,7 +1129,7 @@
     <value>Ensure all parameters are used within the same script, scriptblock, or function where they are declared.</value>
   </data>
   <data name="ReviewUnusedParameterError" xml:space="preserve">
-    <value>The parameter '{0}' has been declared but not used. </value>
+    <value>The parameter '{0}' has been declared but not used.</value>
   </data>
   <data name="ReviewUnusedParameterName" xml:space="preserve">
     <value>ReviewUnusedParameter</value>
