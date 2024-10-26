@@ -54,7 +54,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                 }
 
                 int startColumnOfTrailingWhitespace = 1;
-                for (int i = line.Length - 2; i > 0; i--)
+                for (int i = line.Length - 2; i >= 0; i--)
                 {
                     if (line[i] != ' ' && line[i] != '\t')
                     {
