@@ -60,7 +60,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                         if (commonParamNames.Contains(paramName, StringComparer.OrdinalIgnoreCase))
                         {
                             yield return new DiagnosticRecord(string.Format(CultureInfo.CurrentCulture, Strings.ReservedParamsError, funcAst.Name, paramName),
-                                paramAst.Extent, GetName(), DiagnosticSeverity.Warning, fileName);
+                                paramAst.Extent, GetName(), GetDiagnosticSeverity(), fileName);
                         }
                     }
                 }
@@ -107,7 +107,16 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
         /// <returns></returns>
         public RuleSeverity GetSeverity()
         {
-            return RuleSeverity.Warning;
+            return RuleSeverity.Error;
+        }
+
+        /// <summary>
+        /// Gets the severity of the returned diagnostic record: error, warning, or information.
+        /// </summary>
+        /// <returns></returns>
+        public DiagnosticSeverity GetDiagnosticSeverity()
+        {
+            return DiagnosticSeverity.Error;
         }
 
         /// <summary>
