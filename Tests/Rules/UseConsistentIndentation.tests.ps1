@@ -11,7 +11,7 @@ Describe "UseConsistentIndentation" {
         function Invoke-FormatterAssertion {
             param(
                 [string] $ScriptDefinition,
-                [string] $ExcpectedScriptDefinition,
+                [string] $ExpectedScriptDefinition,
                 [int] $NumberOfExpectedWarnings,
                 [hashtable] $Settings
             )
@@ -19,9 +19,9 @@ Describe "UseConsistentIndentation" {
             # Unit test just using this rule only
             $violations = Invoke-ScriptAnalyzer -ScriptDefinition $scriptDefinition -Settings $settings
             $violations.Count | Should -Be $NumberOfExpectedWarnings -Because $ScriptDefinition
-            Invoke-Formatter -ScriptDefinition $scriptDefinition -Settings $settings | Should -Be $expected -Because $ScriptDefinition
+            Invoke-Formatter -ScriptDefinition $scriptDefinition -Settings $settings | Should -Be $ExpectedScriptDefinition -Because $ScriptDefinition
             # Integration test with all default formatting rules
-            Invoke-Formatter -ScriptDefinition $scriptDefinition | Should -Be $expected -Because $ScriptDefinition
+            Invoke-Formatter -ScriptDefinition $scriptDefinition | Should -Be $ExpectedScriptDefinition -Because $ScriptDefinition
         }
     }
     BeforeEach {
@@ -176,6 +176,18 @@ function test {
 }
 '@
         Invoke-Formatter -ScriptDefinition $IdempotentScriptDefinition | Should -Be $idempotentScriptDefinition
+    }
+
+    It 'Should find violation in script when LParen is first token on a line and is not followed by Newline' {
+        $ScriptDefinition = @'
+     (foo)
+     (bar)
+'@
+        $ExpectedScriptDefinition = @'
+(foo)
+(bar)
+'@
+    Invoke-FormatterAssertion $ScriptDefinition $ExpectedScriptDefinition 2 $settings
     }
 }
 

@@ -163,6 +163,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                         break;
 
                     case TokenKind.LParen:
+                        AddViolation(token, indentationLevel, diagnosticRecords, ref onNewLine);
                         // When a line starts with a parenthesis and it is not the last non-comment token of that line,
                         // then indentation does not need to be increased.
                         if ((tokenIndex == 0 || tokens[tokenIndex - 1].Kind == TokenKind.NewLine) &&
@@ -173,7 +174,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                             break;
                         }
                         lParenSkippedIndentation.Push(false);
-                        AddViolation(token, indentationLevel++, diagnosticRecords, ref onNewLine);
+                        indentationLevel++;
                         break;
 
                     case TokenKind.Pipe:
