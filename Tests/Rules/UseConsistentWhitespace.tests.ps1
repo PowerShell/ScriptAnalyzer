@@ -190,6 +190,40 @@ $x = $true -and
             Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings | Should -Be $null
         }
 
+        It 'Should not find violation if there are whitespaces of size 1 around a unary operator starting with a dash' {
+            Invoke-ScriptAnalyzer -ScriptDefinition '$x -join $y' -Settings $settings | Should -BeNullOrEmpty
+        }
+
+        It 'Should find a violation if no whitespace around a unary operator starting with a dash' {
+            $def = '$x=1'
+            $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
+            Test-CorrectionExtentFromContent $def $violations 1 '=' ' = '
+        }
+
+        It 'Should find a violation if no whitespace before a unary operator starting with a dash' {
+            $def = '$x-join $Y'
+            $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
+            Test-CorrectionExtentFromContent $def $violations 1 '' ' '
+        }
+
+        It 'Should find a violation if no whitespace after a unary operator starting with a dash' {
+            $def = '$x -join$y'
+            $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
+            Test-CorrectionExtentFromContent $def $violations 1 '' ' '
+        }
+
+        It 'Should find a violation if there is a whitespaces not of size 1 around a unary operator starting with a dash' {
+            $def = '$x  -join  $y'
+            $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
+            Test-CorrectionExtentFromContent $def $violations 1 '  -join  ' ' -join '
+        }
+
+        It 'Should find a violation if there is no whitespace after a unary operator with a dash but nothing that preceds it' {
+            $def = '-join$x'
+            $violations = Invoke-ScriptAnalyzer -ScriptDefinition $def -Settings $settings
+            Test-CorrectionExtentFromContent $def $violations 1 '-join' '-join '
+        }
+
         It "Should find violation if not asked to ignore assignment operator in hash table" {
             $def = @'
 $ht = @{
@@ -212,6 +246,7 @@ $ht = @{
             $ruleConfiguration.CheckSeparator = $false
             $ruleConfiguration.IgnoreAssignmentOperatorInsideHashTable = $true
         }
+
         It "Should not find violation if assignment operator is in multi-line hash table" {
             $def = @'
 $ht = @{

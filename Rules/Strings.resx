@@ -1000,7 +1000,7 @@
     <value>Use space before open parenthesis.</value>
   </data>
   <data name="UseConsistentWhitespaceErrorOperator" xml:space="preserve">
-    <value>Use space before and after binary and assignment operators.</value>
+    <value>Use space around binary, assignment and unary operators that start with a dash.</value>
   </data>
   <data name="UseConsistentWhitespaceErrorSeparatorComma" xml:space="preserve">
     <value>Use space after a comma.</value>

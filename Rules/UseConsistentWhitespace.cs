@@ -194,6 +194,7 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
             return TokenTraits.HasTrait(token.Kind, TokenFlags.AssignmentOperator)
                     || TokenTraits.HasTrait(token.Kind, TokenFlags.BinaryPrecedenceAdd)
                     || TokenTraits.HasTrait(token.Kind, TokenFlags.BinaryPrecedenceMultiply)
+                    || TokenTraits.HasTrait(token.Kind, TokenFlags.UnaryOperator) && token.Text.StartsWith("-")
                     || token.Kind == TokenKind.AndAnd
                     || token.Kind == TokenKind.OrOr;
         }
@@ -539,6 +540,35 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                     || tokenNode.Next == null
                     || tokenNode.Value.Kind == TokenKind.DotDot)
                 {
+                    // for cases like '-split$a' as the other checks below in this function assume a preceding token
+                    if (TokenTraits.HasTrait(tokenNode.Value.Kind, TokenFlags.UnaryOperator)
+                        && tokenNode.Value.Text.StartsWith("-")
+                        && tokenNode.Value.Text.Length > 1
+                        && Char.IsLetter(tokenNode.Value.Text[1]))
+                    {
+                        bool hasWhitespaceAfterOperator = tokenNode.Next.Value.Kind == TokenKind.NewLine
+                            || IsPreviousTokenOnSameLineAndApartByWhitespace(tokenNode.Next);
+                        if (!hasWhitespaceAfterOperator)
+                        {
+                            yield return new DiagnosticRecord(
+                                GetError(ErrorKind.Operator),
+                                tokenNode.Value.Extent,
+                                GetName(),
+                                GetDiagnosticSeverity(),
+                                tokenOperations.Ast.Extent.File,
+                                null,
+                                new List<CorrectionExtent>()
+                                {
+                                    new CorrectionExtent(
+                                    tokenNode.Value.Extent.StartLineNumber,
+                                    tokenNode.Value.Extent.EndLineNumber,
+                                    tokenNode.Value.Extent.StartColumnNumber,
+                                    tokenNode.Value.Extent.EndColumnNumber,
+                                    $"{tokenNode.Value.Text} ",
+                                    tokenNode.Value.Extent.File)
+                                });
+                        }
+                    }
                     continue;
                 }
 
