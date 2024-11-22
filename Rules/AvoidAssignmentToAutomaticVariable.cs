@@ -89,7 +89,12 @@ namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules
                 {
                     continue;
                 }
-
+                // also check the parent to exclude variableExpressions that appear within attributes,
+                // such as '[ValidateSet($True,$False)]' where the read-only variables $true,$false appear.
+                if (variableExpressionAst.Parent is AttributeAst)
+                {
+                    continue;
+                }
                 if (_readOnlyAutomaticVariables.Contains(variableName, StringComparer.OrdinalIgnoreCase))
                 {
                     yield return new DiagnosticRecord(DiagnosticRecordHelper.FormatError(Strings.AvoidAssignmentToReadOnlyAutomaticVariableError, variableName),

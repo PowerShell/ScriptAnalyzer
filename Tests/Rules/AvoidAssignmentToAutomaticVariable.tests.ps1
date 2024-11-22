@@ -94,6 +94,13 @@ Describe "AvoidAssignmentToAutomaticVariables" {
             $warnings.Count | Should -Be 0
         }
 
+        It "Does not flag true or false being used in ValidateSet" {
+            # All other read-only automatic variables cannot be used in ValidateSet
+            # they result in a ParseError. $true and $false are permitted however.
+            [System.Array] $warnings = Invoke-ScriptAnalyzer -ScriptDefinition 'param([ValidateSet($true,$false)]$MyVar)$MyVar' -ExcludeRule PSReviewUnusedParameter
+            $warnings.Count | Should -Be 0
+        }
+
         It "Does not throw a NullReferenceException when using assigning a .Net property to a .Net property (Bug in 1.17.0 - issue 1007)" {
             Invoke-ScriptAnalyzer -ScriptDefinition '[foo]::bar = [baz]::qux' -ErrorAction Stop
         }
