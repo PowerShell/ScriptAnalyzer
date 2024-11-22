@@ -1,0 +1,19 @@
+repos:
+-   repo: https://github.com/PowerShell/PSScriptAnalyzer
+    rev: 3e3b2d7b7548fc5513b367cb3a80860d5bfd24db
+    hooks:
+    -   id: powershell_scriptanalyzer
+        # Note that client and server path may be different.
+        # Github image should be /usr/bin/pwsh
+        # Linux/Macos is usually /usr/local/bin/pwsh unless using a user scope
+        entry: /usr/bin/pwsh -Command "Invoke-ScriptAnalyzer -Settings PSGallery -Recurse -ReportSummary -EnableExit -Severity Warning -Path . "
+# https://github.com/pre-commit/pre-commit/pull/2340#issuecomment-1098203344
+#-   repo: local
+#    hooks:
+#    -   id: pwsh
+#        name: pwsh
+#        entry: Invoke-ScriptAnalyzer.ps1 -Settings PSGallery -Recurse -EnableExit -Severity Warning -Path .
+#        language: script
+#        always_run: true
+#        pass_filenames: false
+#        verbose: true
